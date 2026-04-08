@@ -1,4 +1,5 @@
 import { Injectable, effect, signal, computed } from '@angular/core';
+import { Subject } from 'rxjs';
 
 export interface LayoutConfig {
     preset: string;
@@ -28,6 +29,10 @@ export class LayoutService {
         darkTheme: false,
         menuMode: 'static'
     });
+
+    private overlayOpen = new Subject<any>();
+
+    overlayOpen$ = this.overlayOpen.asObservable();
 
     layoutState = signal<LayoutState>({
         staticMenuDesktopInactive: false,
@@ -101,6 +106,10 @@ export class LayoutService {
             this.layoutState.update((prev) => ({ ...prev, staticMenuDesktopInactive: !this.layoutState().staticMenuDesktopInactive }));
         } else {
             this.layoutState.update((prev) => ({ ...prev, mobileMenuActive: !this.layoutState().mobileMenuActive }));
+
+            if (this.layoutState().mobileMenuActive) {
+                this.overlayOpen.next(null);
+            }
         }
     }
 

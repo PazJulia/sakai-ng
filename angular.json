@@ -22,6 +22,9 @@
                         "browser": "src/main.ts",
                         "tsConfig": "tsconfig.app.json",
                         "inlineStyleLanguage": "scss",
+                        "polyfills": [
+                            "zone.js"
+                        ],
                         "assets": [
                             {
                                 "glob": "**/*",
@@ -29,8 +32,7 @@
                             }
                         ],
                         "styles": [
-                            "src/assets/styles.scss",
-                            "src/assets/tailwind.css"
+                            "src/styles.scss"
                         ],
                         "scripts": []
                     },

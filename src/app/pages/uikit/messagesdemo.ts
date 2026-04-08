@@ -27,11 +27,11 @@ import {ToastModule} from 'primeng/toast';
                     <div class="font-semibold text-xl mt-4 mb-4">Inline</div>
                     <div class="flex mb-4 gap-1">
                         <input pInputText [(ngModel)]="username" placeholder="Username" aria-label="username" class="ng-dirty ng-invalid" />
-                        <p-message severity="error" size="small" styleClass="h-auto w-full " [pt]="pt">Username is required</p-message>
+                        <p-message severity="error" size="small" styleClass="h-auto w-full ">Username is required</p-message>
                     </div>
                     <div class="flex flex-wrap gap-1">
                         <input pInputText [(ngModel)]="email" placeholder="Email" aria-label="email" class="ng-dirty ng-invalid" />
-                        <p-message severity="error" size="small" styleClass="flex items-center text-center justify-center h-auto w-11" [pt]="pt">
+                        <p-message severity="error" size="small" styleClass="flex items-center text-center justify-center h-auto w-11">
                             <i class="pi pi-times-circle"></i>
                         </p-message>
                     </div>

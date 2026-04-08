@@ -1,7 +1,11 @@
-@use './tailwind.css';
-@use './assets/layout/layout.scss';
+@use './assets/layout/_main.scss';
+@use './assets/layout/_responsive.scss';
 @use 'primeicons/primeicons.css';
-@use './assets/demo/demo.scss';
+// @use './assets/demo/demo.scss'; // Missing file
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Sakura Noir Theme - Global Styles */
 :root {

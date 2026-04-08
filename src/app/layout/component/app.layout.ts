@@ -42,7 +42,7 @@ export class AppLayout implements OnDestroy {
                 });
             }
 
-            if (this.layoutService.layoutState().staticMenuMobileActive) {
+            if (this.layoutService.layoutState().mobileMenuActive) {
                 this.blockBodyScroll();
             }
         });
@@ -61,7 +61,7 @@ export class AppLayout implements OnDestroy {
     }
 
     hideMenu() {
-        this.layoutService.layoutState.update((prev) => ({ ...prev, overlayMenuActive: false, staticMenuMobileActive: false, menuHoverActive: false }));
+        this.layoutService.layoutState.update((prev) => ({ ...prev, overlayMenuActive: false, mobileMenuActive: false, menuHoverActive: false }));
         if (this.menuOutsideClickListener) {
             this.menuOutsideClickListener();
             this.menuOutsideClickListener = null;
@@ -91,7 +91,7 @@ export class AppLayout implements OnDestroy {
             'layout-static': this.layoutService.layoutConfig().menuMode === 'static',
             'layout-static-inactive': this.layoutService.layoutState().staticMenuDesktopInactive && this.layoutService.layoutConfig().menuMode === 'static',
             'layout-overlay-active': this.layoutService.layoutState().overlayMenuActive,
-            'layout-mobile-active': this.layoutService.layoutState().staticMenuMobileActive
+            'layout-mobile-active': this.layoutService.layoutState().mobileMenuActive
         };
     }
 

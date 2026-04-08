@@ -1,5 +1,35 @@
-/* You can add global styles to this file, and also import other style files */
 @use './tailwind.css';
 @use './assets/layout/layout.scss';
 @use 'primeicons/primeicons.css';
 @use './assets/demo/demo.scss';
+
+/* Sakura Noir Theme - Global Styles */
+:root {
+    --sakura-pink: #FFB7C5;
+    --sakura-neon: #ff6b81;
+    --sakura-bg: #0f172a;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--sakura-bg);
+    color: #f8fafc;
+}
+
+.font-jp {
+    font-family: 'Noto Serif JP', serif;
+}
+
+.glass-effect {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border) !important;
+}
+
+.sakura-glow-hover:hover {
+    box-shadow: 0 0 15px -3px var(--sakura-neon);
+    transition: all 0.3s ease;
+}

@@ -1,0 +1,71 @@
+:host {
+    display: block;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-section {
+    border: 1px solid var(--glass-border);
+    background-size: cover;
+    background-position: center;
+}
+
+.anime-card {
+    cursor: pointer;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(4px);
+    
+    img {
+        transition: transform 0.5s ease;
+    }
+
+    &:hover img {
+        transform: scale(1.05);
+    }
+}
+
+.genre-btn {
+    font-size: 0.9rem;
+    letter-spacing: 0.05rem;
+    text-transform: capitalize;
+}
+
+::ng-deep {
+    .p-carousel-indicators {
+        gap: 8px;
+        padding-top: 1rem;
+        
+        .p-carousel-indicator.p-highlight button {
+            background-color: var(--sakura-neon);
+            width: 2rem;
+        }
+        
+        .p-carousel-indicator button {
+            background-color: var(--glass-border);
+            height: 6px;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+    }
+    
+    .p-carousel-prev, .p-carousel-next {
+        background: var(--glass-bg) !important;
+        border: 1px solid var(--glass-border) !important;
+        color: white !important;
+        backdrop-filter: blur(8px) !important;
+        height: 3rem !important;
+        width: 3rem !important;
+        border-radius: 50% !important;
+        transition: all 0.3s !important;
+        
+        &:hover {
+            background: var(--sakura-neon) !important;
+            border-color: var(--sakura-neon) !important;
+        }
+    }
+}

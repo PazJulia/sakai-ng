@@ -4,6 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PesquisaResponse } from '../pesquisa/pesquisa-response';
 
+export interface FavoriteAnimeResponse {
+    anime_id: number;
+    id: number;
+    rating?: number;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -12,15 +18,19 @@ export class FavoritosService extends BaseService<PesquisaResponse> {
         super(http, 'favorites');
     }
 
-    getFavorites(): Observable<PesquisaResponse[]> {
-        return this.http.get<PesquisaResponse[]>(this.getControllerUrl());
+    buscarFavoritos(): Observable<PesquisaResponse[]> {
+        return this.http.get<PesquisaResponse[]>(`${this.getControllerUrl()}/`);
     }
 
-    addFavorite(anime: PesquisaResponse): Observable<void> {
-        return this.http.post<void>(this.getControllerUrl(), anime);
+    adicionarFavorito(animeId: number): Observable<FavoriteAnimeResponse> {
+        return this.http.post<FavoriteAnimeResponse>(`${this.getControllerUrl()}/`, { anime_id: animeId });
     }
 
-    removeFavorite(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.getControllerUrl()}/${id}`);
+    atualizarNotaFavorito(animeId: number, rating: number): Observable<FavoriteAnimeResponse> {
+        return this.http.patch<FavoriteAnimeResponse>(`${this.getControllerUrl()}/${animeId}/rating`, { rating });
+    }
+
+    removerFavorito(animeId: number): Observable<{ message: string }> {
+        return this.http.delete<{ message: string }>(`${this.getControllerUrl()}/${animeId}`);
     }
 }

@@ -10,7 +10,7 @@ export class PesquisaService extends BaseService<string> {
         super(http, 'anime');
     }
 
-    buscarTitulo(search?: string, sort?: string, page: number = 1, per_page: number = 50): Observable<ListResponse> {
+    buscarTitulo(search?: string, sort?: string, page: number = 1, per_page: number = 18): Observable<ListResponse> {
         let params = new HttpParams();
         if (search) params = params.append('title', search);
         if (sort) params = params.append('sort', sort);
@@ -18,12 +18,12 @@ export class PesquisaService extends BaseService<string> {
         return this.http.get<ListResponse>(`${this.getControllerUrl()}/search`, { params: params });
     }
 
-    buscarGenero(genre: string, sort?: string, page: number = 1, per_page: number = 50): Observable<ListResponse> {
+    buscarGenero(genre: string, sort?: string, page: number = 1, per_page: number = 18): Observable<ListResponse> {
         let params = new HttpParams();
         params = params.append('genre', genre);
         if (sort) params = params.append('sort', sort);
         params = params.appendAll({ 'page': page, 'per_page': per_page });
-        return this.http.get<ListResponse>(`${this.getControllerUrl()}/search`, { params: params });
+        return this.http.get<ListResponse>(`${this.getControllerUrl()}/genre`, { params: params });
     }
 
     getAnimeById(id: number): Observable<any> {

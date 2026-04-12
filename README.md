@@ -1,59 +1,68 @@
-# Sakai19
+# MyAnimeList - Interface
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.
+Este repositório contém o front-end do projeto **MyAnimeList**, desenvolvido como parte do MVP para a Sprint de Desenvolvimento Full Stack Avançado. A interface permite gerenciar uma lista de animes favoritos, realizar buscas em tempo real e atribuir notas aos títulos.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🎨 Design e Funcionalidades
 
-```bash
-ng serve
-```
+- **Tema Sakura Noir**: Uma interface moderna e elegante com tons de cerejeira e modo escuro.
+- **Busca Avançada**: Filtros por título, gênero e ordenação dinâmica.
+- **Gestão de Favoritos**: CRUD completo (Adicionar, Ver, Avaliar e Remover).
+- **Tradução Automática**: Sinopses traduzidas para o português (processadas pelo backend).
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 🏗️ Arquitetura do Sistema
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+A aplicação segue o modelo de microcomponentização, onde o front-end consome uma API principal (wrapper), que por sua vez integra dados de uma API externa e persiste informações localmente. De acordo com os requisitos, o fluxograma abaixo ilustra as interações entre os componentes:
 
-```bash
-ng generate component component-name
-```
+![Arquitetura do Projeto](architecture_diagram.png)
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## 📡 API Externa Utilizada
 
-## Building
+Para a obtenção de dados atualizados sobre animes, este projeto utiliza a:
+- **API**: [AniList GraphQL API](https://anilist.co/)
+- **Licença**: Free/Public (uso não comercial).
+- **Cadastro**: Não obrigatório para leitura de dados públicos.
+- **Rotas Consumidas**: Endpoints de busca, detalhes de mídia e coleção de gêneros via GraphQL.
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+## 🛠️ Como Executar
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Pré-requisitos
+- Node.js (v20+)
+- pnpm (`npm install -g pnpm`)
+- Docker (opcional)
 
-## Running unit tests
+### Opção 1: Desenvolvimento Local
+1. Instale as dependências:
+   ```bash
+   pnpm install
+   ```
+2. Inicie o servidor de desenvolvimento:
+   ```bash
+   pnpm start
+   ```
+3. Acesse `http://localhost:4200`.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### Opção 2: Via Docker
+1. Construa a imagem:
+   ```bash
+   docker build -t my-anime-list-front .
+   ```
+2. Execute o container:
+   ```bash
+   docker run -p 80:80 my-anime-list-front
+   ```
+3. Acesse `http://localhost:80`.
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 📁 Estrutura de Pastas
+- `src/app/pages`: Componentes de página (Home, Busca, Favoritos, Detalhes).
+- `src/app/domain`: Serviços e modelos de domínio para comunicação com a API.
+- `public`: Ativos estáticos e configurações globais.

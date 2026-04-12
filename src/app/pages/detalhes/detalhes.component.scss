@@ -1,0 +1,67 @@
+.detalhes-container {
+    font-family: 'Inter', sans-serif;
+}
+
+.glass-effect {
+    background: rgba(30, 41, 59, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.font-jp {
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+:host ::ng-deep {
+    .p-tag {
+        background: rgba(236, 72, 153, 0.1);
+        border: 1px solid rgba(236, 72, 153, 0.2);
+    }
+    
+    .p-chip {
+        border-radius: 12px;
+    }
+
+    .rating-noir {
+        display: flex;
+        gap: 3px;
+        
+        .p-rating-icon {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.2);
+
+            &:hover {
+                transform: scale(1.3);
+                color: #f472b6;
+            }
+        }
+
+        .p-rating-icon.pi-star-fill {
+            color: #ec4899 !important;
+            text-shadow: 0 0 10px rgba(236, 72, 153, 0.8);
+        }
+    }
+
+    // Styling HTML description content
+    .glass-effect b, .glass-effect strong {
+        color: #f472b6;
+    }
+    
+    .glass-effect br + br {
+        display: block;
+        content: "";
+        margin-top: 10px;
+    }
+}

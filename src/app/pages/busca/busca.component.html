@@ -1,18 +1,37 @@
 <div class="p-6 min-h-screen bg-transparent">
-    <div class="flex justify-center flex-wrap gap-6" *ngIf="animes.length; else notFound">
-        <div *ngFor="let anime of animes" 
-             class="anime-card glass-effect relative overflow-hidden rounded-2xl w-[220px] transition-all duration-500 hover:-translate-y-4 sakura-glow-hover group">
-            
+
+    <!-- Skeleton Loading -->
+    <div class="flex justify-center flex-wrap gap-6" *ngIf="loading">
+        <div *ngFor="let item of skeletonItems"
+            class="anime-card glass-effect relative overflow-hidden rounded-2xl w-[220px]">
+            <p-skeleton width="220px" height="320px"></p-skeleton>
+            <div class="p-4">
+                <p-skeleton width="140px" height="1.2rem" styleClass="mb-2"></p-skeleton>
+                <p-skeleton width="100px" height="0.8rem" styleClass="mb-4"></p-skeleton>
+                <div class="flex justify-between items-center">
+                    <p-skeleton width="30px" height="30px" shape="circle"></p-skeleton>
+                    <p-skeleton width="60px" height="0.6rem"></p-skeleton>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actual Content -->
+    <div class="flex justify-center flex-wrap gap-6" *ngIf="!loading && animes.length; else notFound">
+        <div *ngFor="let anime of animes" [routerLink]="['/anime', anime.id]"
+            class="anime-card glass-effect relative overflow-hidden rounded-2xl w-[220px] transition-all duration-500 hover:-translate-y-4 sakura-glow-hover group cursor-pointer">
+
             <!-- Manga Panel Image -->
             <div class="relative h-[320px] overflow-hidden">
-                <img [src]="anime.coverImage.large" 
-                     [alt]="anime.title.romaji" 
-                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
-                
+                <img [src]="anime.coverImage.large" [alt]="anime.title.romaji"
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60">
+                </div>
+
                 <!-- Floating Tags -->
                 <div class="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span class="px-2 py-1 bg-pink-500 text-[10px] font-bold rounded-md uppercase tracking-tighter">Anime</span>
+                    <span
+                        class="px-2 py-1 bg-pink-500 text-[10px] font-bold rounded-md uppercase tracking-tighter">Anime</span>
                 </div>
             </div>
 
@@ -20,27 +39,23 @@
             <div class="p-4 relative">
                 <h3 class="text-lg font-bold truncate mb-0 leading-tight">{{ anime.title.romaji }}</h3>
                 <p class="font-jp text-pink-400 text-sm italic truncate mt-1 opacity-80">{{ anime.title.native }}</p>
-                
+
                 <div class="flex justify-between items-center mt-4">
-                    <p-button icon="pi pi-heart" 
-                              styleClass="p-button-rounded p-button-text hover:bg-pink-500/20 text-pink-400" 
-                              [outlined]="true"></p-button>
+                    <app-favorite-button [anime]="anime"></app-favorite-button>
                     <span class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Ver Detalhes</span>
                 </div>
             </div>
 
             <!-- Hover Accent Line -->
-            <div class="absolute bottom-0 left-0 w-full h-1 bg-pink-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+            <div
+                class="absolute bottom-0 left-0 w-full h-1 bg-pink-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left">
+            </div>
         </div>
     </div>
-    
+
     <div class="flex justify-center mt-8" *ngIf="info?.total">
-        <p-paginator 
-            (onPageChange)="onPageChange($event)" 
-            [first]="(info.currentPage - 1) * 50" 
-            [rows]="50" 
-            [totalRecords]="info.total"
-            styleClass="bg-transparent border-none">
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="(info.currentPage - 1) * 50" [rows]="50"
+            [totalRecords]="info.total" styleClass="bg-transparent border-none">
         </p-paginator>
     </div>
 
@@ -52,28 +67,3 @@
         </div>
     </ng-template>
 </div>
-
-<!--
-<div class="card">
-    <p-carousel [value]="animes" [numVisible]="5" [numScroll]="info.total" [circular]="false">
-        <ng-template let-anime #item>
-            <div class="border border-surface rounded-border m-2 p-4">
-                <div class="mb-4">
-                    <div class="relative mx-auto">
-                        <img src="{{ anime.coverImage.large }}" [alt]="anime.name" class="w-full rounded-border" />
-                        <p-tag [value]="anime.inventoryStatus" class="absolute"
-                               [ngStyle]="{ 'left.px': 5, 'top.px': 5 }" />
-                    </div>
-                </div>
-                <div class="mb-4 font-medium">{{ anime.title.romaji }}</div>
-                <div class="mb-4 font-medium">{{ anime.title.native }}</div>
-                <div class="flex justify-between items-center">
-                    <span>
-                        <p-button icon="pi pi-heart" severity="secondary" [outlined]="true" />
-                    </span>
-                </div>
-            </div>
-        </ng-template>
-    </p-carousel>
-</div>
--->

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '../base-service/base.service';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ListResponse } from '../base-service/list-response';
 
 @Injectable()
 export class GeneroService extends BaseService<string> {

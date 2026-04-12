@@ -1,0 +1,9 @@
+node_modules
+dist
+.git
+.angular
+.idea
+.vscode
+*.log
+# Do NOT ignore nginx.conf as it is needed for the build stage-1
+# nginx.conf

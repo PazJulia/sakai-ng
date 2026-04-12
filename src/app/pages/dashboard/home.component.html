@@ -1,52 +1,50 @@
 <div class="dashboard-container p-4 lg:p-8 space-y-12">
-    
+
     <!-- Hero Section: Anime em Destaque -->
-    <section class="hero-section relative w-full h-[450px] md:h-[500px] lg:h-[520px] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl group" *ngIf="heroAnime && heroAnime.coverImage?.large">
-        <img [src]="heroAnime.coverImage.large" alt="Hero Background" class="absolute inset-0 w-full h-full object-cover filter brightness-50 transition-transform duration-1000 group-hover:scale-105" />
+    <section [routerLink]="['/anime', heroAnime.id]" 
+        class="hero-section relative w-full h-[450px] md:h-[500px] lg:h-[520px] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl group cursor-pointer" 
+        *ngIf="heroAnime && heroAnime.coverImage?.large">
+        <img [src]="heroAnime.coverImage.large" alt="Hero Background"
+            class="absolute inset-0 w-full h-full object-cover filter brightness-50 transition-transform duration-1000 group-hover:scale-105" />
         <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/90 md:from-black/80 via-black/50 md:via-black/30 to-transparent"></div>
-        
-        <!-- O container interno agora usa 'absolute inset-0' para garantir que NUNCA estoure as alturas de 500px, e gerencia o flow com padding -->
-        <div class="absolute inset-0 flex flex-col justify-end md:justify-center p-6 sm:p-8 md:p-12 lg:px-16 lg:py-12 space-y-3 md:space-y-5 max-w-full md:max-w-2xl lg:max-w-4xl">
-            <span class="inline-block px-3 py-1 bg-pink-500 text-[10px] md:text-xs font-bold rounded-full w-fit animate-bounce tracking-widest uppercase shadow-md">#1 Trending</span>
-            
-            <!-- lg:text-6xl estava esmagando o box caso o anime tivesse um nome imenso, reduzi para lg:text-5xl e forcei no máximo 2 linhas -->
-            <h1 class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight leading-none text-white drop-shadow-lg line-clamp-2" [title]="heroAnime.title.romaji">
+
+        <div class="hero-container absolute inset-0 flex flex-col justify-end p-6 sm:p-8 md:justify-center md:p-12 lg:px-16 lg:py-12 space-y-3 md:space-y-5 max-w-full md:max-w-2xl lg:max-w-4xl">
+            <span class="hero-badge">#1 Trending</span>
+
+            <h1 class="hero-title" [title]="heroAnime.title.romaji">
                 {{ heroAnime.title.romaji }}
             </h1>
-            
-            <!-- Truncate evita que o nome japonês crie uma quebra em nova linha empurrando os botões -->
-            <p class="font-jp text-pink-400 text-sm md:text-lg lg:text-xl italic opacity-90 drop-shadow-md truncate">
+
+            <p class="hero-subtitle">
                 {{ heroAnime.title.native }}
             </p>
-            
-            <!-- overflow-hidden acerta um bug em alguns navegadores onde o line-clamp ignora o tamanho da div mãe -->
-            <div class="text-slate-200 text-xs md:text-sm lg:text-base line-clamp-2 md:line-clamp-3 leading-relaxed overflow-hidden drop-shadow-sm" [innerHTML]="heroAnime.description"></div>
-            
+
             <div class="flex flex-wrap gap-3 md:gap-4 pt-2 md:pt-4">
-                <p-button label="Ver Detalhes" icon="pi pi-play" styleClass="p-button-rounded bg-pink-500 hover:bg-pink-600 border-none shadow-lg px-6 md:px-8 py-2 md:py-3 text-sm md:text-base font-semibold"></p-button>
-                <p-button 
-                    [icon]="ehFavorito(heroAnime) ? 'pi pi-heart-fill' : 'pi pi-heart'" 
-                    (click)="alternarFavorito(heroAnime)"
-                    [styleClass]="'p-button-rounded p-button-outlined border-white text-white hover:bg-white/20 transition-all px-4 md:px-5 py-2 md:py-3 ' + (ehFavorito(heroAnime) ? 'bg-pink-500/20 text-pink-400 border-pink-400' : '')" 
-                    [outlined]="true">
-                </p-button>
+                <p-button label="Ver Detalhes" icon="pi pi-play" [routerLink]="['/anime', heroAnime.id]"
+                    styleClass="p-button-rounded bg-pink-500 hover:bg-pink-600 border-none shadow-lg px-6 md:px-8 py-2 md:py-3 text-sm md:text-base font-semibold"></p-button>
+                <app-favorite-button [anime]="heroAnime"
+                    [styleClass]="'p-button-rounded p-button-outlined border-white text-white hover:bg-white/20 transition-all px-4 md:px-5 py-2 md:py-3 ' + (heroAnime.isFavorite ? 'bg-pink-500/20 text-pink-400 border-pink-400' : '')">
+                </app-favorite-button>
             </div>
         </div>
     </section>
 
     <!-- Lista de Favoritos -->
     <section class="favorites-section" *ngIf="favoritos.length > 0">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold border-l-4 border-pink-500 pl-4">Seus Favoritos</h2>
+        <div class="section-header flex items-center justify-between mb-6">
+            <h2 class="section-title border-pink-500 font-bold border-l-4 pl-4 text-2xl">Seus Favoritos</h2>
             <a routerLink="/favoritos" class="text-pink-400 text-sm hover:underline">Ver todos</a>
         </div>
-        <p-carousel [value]="favoritos" [numVisible]="5" [numScroll]="1" [circular]="false" [responsiveOptions]="responsiveOptions">
+        <p-carousel [value]="favoritos" [numVisible]="5" [numScroll]="1" [circular]="false"
+            [responsiveOptions]="responsiveOptions">
             <ng-template let-anime #item>
                 <div class="p-2">
-                    <div class="anime-card glass-effect relative overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-2 sakura-glow-hover group">
-                        <img *ngIf="anime?.coverImage?.large" [src]="anime.coverImage.large" class="w-full h-[280px] object-cover" />
+                    <div [routerLink]="['/anime', anime.id]" 
+                        class="anime-card relative overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-2 group cursor-pointer">
+                        <img *ngIf="anime?.coverImage?.large" [src]="anime.coverImage.large"
+                            class="anime-card-img w-full h-[280px] object-cover" alt="Capa do anime" />
                         <div class="p-3">
-                            <h3 class="text-sm font-bold truncate leading-tight group-hover:text-pink-400">{{ anime.title.romaji }}</h3>
+                            <h3 class="anime-card-title text-sm font-bold truncate leading-tight transition-colors">{{ anime.title.romaji }}</h3>
                         </div>
                     </div>
                 </div>
@@ -56,16 +54,19 @@
 
     <!-- Populares no Momento -->
     <section class="trending-section">
-        <div class="flex items-center mb-6">
-            <h2 class="text-2xl font-bold border-l-4 border-pink-500 pl-4">Populares no Momento</h2>
+        <div class="section-header flex items-center mb-6 justify-start">
+            <h2 class="section-title border-pink-500 font-bold border-l-4 pl-4 text-2xl">Populares no Momento</h2>
         </div>
-        <p-carousel [value]="trendingAnimes" [numVisible]="5" [numScroll]="1" [circular]="true" [autoplayInterval]="5000" [responsiveOptions]="responsiveOptions">
+        <p-carousel [value]="trendingAnimes" [numVisible]="5" [numScroll]="1" [circular]="true"
+            [autoplayInterval]="5000" [responsiveOptions]="responsiveOptions">
             <ng-template let-anime #item>
                 <div class="p-2">
-                    <div class="anime-card glass-effect relative overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-2 sakura-glow-hover group">
-                        <img *ngIf="anime?.coverImage?.large" [src]="anime.coverImage.large" class="w-full h-[280px] object-cover" />
+                    <div [routerLink]="['/anime', anime.id]" 
+                        class="anime-card relative overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-2 group cursor-pointer">
+                        <img *ngIf="anime?.coverImage?.large" [src]="anime.coverImage.large"
+                            class="anime-card-img w-full h-[280px] object-cover" alt="Capa do anime" />
                         <div class="p-3">
-                            <h3 class="text-sm font-bold truncate leading-tight group-hover:text-pink-400">{{ anime.title.romaji }}</h3>
+                            <h3 class="anime-card-title text-sm font-bold truncate leading-tight transition-colors">{{ anime.title.romaji }}</h3>
                         </div>
                     </div>
                 </div>
@@ -75,16 +76,19 @@
 
     <!-- Populares de Todos os Tempos -->
     <section class="popular-section">
-        <div class="flex items-center mb-6">
-            <h2 class="text-2xl font-bold border-l-4 border-blue-500 pl-4">Populares de Todos os Tempos</h2>
+        <div class="section-header flex items-center mb-6 justify-start">
+            <h2 class="section-title border-blue-500 font-bold border-l-4 pl-4 text-2xl">Populares de Todos os Tempos</h2>
         </div>
-        <p-carousel [value]="popularAnimes" [numVisible]="5" [numScroll]="1" [circular]="true" [responsiveOptions]="responsiveOptions">
+        <p-carousel [value]="popularAnimes" [numVisible]="5" [numScroll]="1" [circular]="true"
+            [responsiveOptions]="responsiveOptions">
             <ng-template let-anime #item>
                 <div class="p-2">
-                    <div class="anime-card glass-effect relative overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-2 sakura-glow-hover group">
-                        <img *ngIf="anime?.coverImage?.large" [src]="anime.coverImage.large" class="w-full h-[280px] object-cover" />
+                    <div [routerLink]="['/anime', anime.id]" 
+                        class="anime-card relative overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-2 group cursor-pointer">
+                        <img *ngIf="anime?.coverImage?.large" [src]="anime.coverImage.large"
+                            class="anime-card-img w-full h-[280px] object-cover" alt="Capa do anime" />
                         <div class="p-3">
-                            <h3 class="text-sm font-bold truncate leading-tight group-hover:text-pink-400">{{ anime.title.romaji }}</h3>
+                            <h3 class="anime-card-title text-sm font-bold truncate leading-tight transition-colors">{{ anime.title.romaji }}</h3>
                         </div>
                     </div>
                 </div>
@@ -94,13 +98,12 @@
 
     <!-- Navegar por Gêneros -->
     <section class="genres-section pb-12">
-        <div class="flex items-center mb-6">
-            <h2 class="text-2xl font-bold border-l-4 border-emerald-500 pl-4">Explorar Gêneros</h2>
+        <div class="section-header flex items-center mb-6 justify-start">
+            <h2 class="section-title border-emerald-500 font-bold border-l-4 pl-4 text-2xl">Explorar Gêneros</h2>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            <button *ngFor="let genero of generos" 
-                    (click)="navegarGenero(genero)"
-                    class="genre-btn glass-effect p-4 rounded-xl text-center font-bold hover:bg-pink-500 hover:text-white transition-all duration-300 active:scale-95 shadow-sm">
+            <button *ngFor="let genero of generos" (click)="navegarGenero(genero)"
+                class="genre-btn glass-effect p-4 rounded-xl text-center font-bold hover:bg-pink-500 hover:text-white transition-all duration-300 active:scale-95 shadow-sm">
                 {{ genero }}
             </button>
         </div>

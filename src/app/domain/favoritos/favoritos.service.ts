@@ -2,12 +2,22 @@ import { Injectable } from '@angular/core';
 import { BaseService } from '../base-service/base.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { plainToInstance } from 'class-transformer';
 import { PesquisaResponse } from '../pesquisa/pesquisa-response';
 
 export interface FavoriteAnimeResponse {
     anime_id: number;
     id: number;
     rating?: number;
+}
+
+export interface FavoriteListItem {
+    anime_id: number;
+    id: number;
+    rating: number;
+    nome: string;
+    imagem: string;
 }
 
 @Injectable({
@@ -19,7 +29,13 @@ export class FavoritosService extends BaseService<PesquisaResponse> {
     }
 
     buscarFavoritos(): Observable<PesquisaResponse[]> {
-        return this.http.get<PesquisaResponse[]>(`${this.getControllerUrl()}/`);
+        return this.http.get<PesquisaResponse[]>(`${this.getControllerUrl()}/`).pipe(
+            map(res => plainToInstance(PesquisaResponse, res))
+        );
+    }
+
+    getFavoritesList(): Observable<FavoriteListItem[]> {
+        return this.http.get<FavoriteListItem[]>(`${this.getControllerUrl()}/`);
     }
 
     adicionarFavorito(animeId: number): Observable<FavoriteAnimeResponse> {

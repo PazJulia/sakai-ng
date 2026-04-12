@@ -1,0 +1,143 @@
+<div class="detalhes-container min-h-screen bg-[#0f172a] text-slate-200">
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="p-8 space-y-8 animate-pulse">
+        <div class="h-[400px] w-full bg-slate-800 rounded-3xl"></div>
+        <div class="max-w-4xl mx-auto space-y-4">
+            <div class="h-12 w-3/4 bg-slate-800 rounded-lg"></div>
+            <div class="h-6 w-1/4 bg-slate-800 rounded-lg"></div>
+            <div class="h-32 w-full bg-slate-800 rounded-lg"></div>
+        </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="flex flex-col items-center justify-center min-h-[60vh] p-8 space-y-6">
+        <i class="pi pi-exclamation-circle text-6xl text-pink-500"></i>
+        <h2 class="text-2xl font-bold">Ops! Não conseguimos carregar os detalhes.</h2>
+        <p class="text-slate-400">Verifique sua conexão ou tente novamente mais tarde.</p>
+        <p-button label="Voltar para Home" icon="pi pi-home" routerLink="/"
+            styleClass="p-button-rounded bg-pink-500"></p-button>
+    </div>
+
+    <!-- Content -->
+    <div *ngIf="anime && !loading" class="animate-fade-in">
+
+        <!-- Hero Section -->
+        <header class="relative w-full h-[350px] md:h-[450px] lg:h-[500px] overflow-hidden">
+            <img [src]="anime.coverImage.large" alt="Background"
+                class="absolute inset-0 w-full h-full object-cover filter blur-md scale-110 opacity-40" />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/60 to-transparent"></div>
+
+            <div class="absolute inset-0 flex items-end">
+                <div
+                    class="max-w-7xl mx-auto w-full px-6 pb-8 md:pb-12 flex flex-col md:flex-row gap-8 items-center md:items-end">
+                    <!-- Poster -->
+                    <div
+                        class="w-48 md:w-64 flex-shrink-0 shadow-2xl rounded-2xl overflow-hidden transform -rotate-2 hover:rotate-0 transition-transform duration-500 border-4 border-slate-800/50">
+                        <img [src]="anime.coverImage.large" [alt]="anime.title.romaji" class="w-full h-auto" />
+                    </div>
+
+                    <!-- Basic Info -->
+                    <div class="flex-1 text-center md:text-left space-y-4 pb-2">
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-3">
+                            <p-tag *ngIf="anime.averageScore" [value]="anime.averageScore + '% Score'"
+                                [severity]="getScoreSeverity(anime.averageScore)"
+                                styleClass="text-xs font-bold px-3 py-1 shadow-md"></p-tag>
+                            <span class="text-slate-400 text-sm font-medium uppercase tracking-widest">{{
+                                anime.seasonYear }}</span>
+                        </div>
+
+                        <h1
+                            class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight text-white drop-shadow-2xl">
+                            {{ anime.title.romaji }}
+                        </h1>
+
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                            <h2 class="font-jp text-pink-400 text-lg md:text-2xl italic opacity-90 drop-shadow-md">
+                                {{ anime.title.native }}
+                            </h2>
+                            <div class="flex items-center gap-4 bg-slate-900/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/5 shadow-inner min-h-[50px]">
+                                <app-favorite-button [anime]="anime"
+                                    styleClass="p-button-rounded p-button-outlined border-pink-500 text-pink-400 hover:bg-pink-500/10"></app-favorite-button>
+                                
+                                <div class="flex flex-col gap-1 border-l border-white/10 pl-4 h-full transition-all duration-500" 
+                                     [ngClass]="{'opacity-30 pointer-events-none grayscale': !anime.isFavorite}">
+                                    <span class="text-[10px] uppercase tracking-tighter text-slate-400 font-bold opacity-70">
+                                        {{ anime.isFavorite ? 'Sua Nota' : 'Favoritar para avaliar' }}
+                                    </span>
+                                    <p-rating [(ngModel)]="anime.rating" [stars]="10" (onRate)="onRatingChange($event.value)"
+                                              styleClass="rating-noir" [readonly]="!anime.isFavorite">
+                                    </p-rating>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back Button -->
+            <button routerLink="/"
+                class="absolute top-6 left-6 p-3 bg-black/40 hover:bg-black/60 backdrop-blur-md rounded-full text-white transition-all active:scale-95 shadow-lg group">
+                <i class="pi pi-arrow-left text-lg group-hover:-translate-x-1 transition-transform"></i>
+            </button>
+        </header>
+
+        <!-- Details Content -->
+        <main class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+            <!-- Left Column: Synopsis & Genres -->
+            <div class="lg:col-span-2 space-y-10">
+                <section class="space-y-4">
+                    <h3 class="text-2xl font-bold flex items-center gap-3">
+                        <span class="w-2 h-8 bg-pink-500 rounded-full"></span>
+                        Sinopse
+                    </h3>
+                    <div class="glass-effect p-6 md:p-8 rounded-3xl text-slate-300 leading-relaxed text-lg"
+                        [innerHTML]="anime.description"></div>
+                </section>
+
+                <section class="space-y-4">
+                    <h3 class="text-xl font-bold text-slate-400 uppercase tracking-widest">Gêneros</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <p-chip *ngFor="let genre of anime.genres" [label]="genre"
+                            styleClass="bg-slate-800/80 text-pink-400 font-semibold border border-pink-500/20 px-4 py-2 hover:bg-pink-500/10 transition-colors"></p-chip>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column: Stats & Extras -->
+            <div class="space-y-10">
+                <section class="space-y-4">
+                    <h3 class="text-2xl font-bold flex items-center gap-3">
+                        <span class="w-2 h-8 bg-pink-500 rounded-full"></span>
+                        Informações
+                    </h3>
+
+                    <div class="glass-effect p-8 rounded-3xl space-y-6 border border-white/5 shadow-xl">
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center group">
+                                <span class="text-slate-400 font-medium">Formato</span>
+                                <span class="text-white font-bold group-hover:text-pink-400 transition-colors">TV
+                                    Series</span>
+                            </div>
+                            <div class="flex justify-between items-center group" *ngIf="anime.seasonYear">
+                                <span class="text-slate-400 font-medium">Ano</span>
+                                <span class="text-white font-bold group-hover:text-pink-400 transition-colors">{{
+                                    anime.seasonYear }}</span>
+                            </div>
+                            <div class="flex justify-between items-center group" *ngIf="anime.averageScore">
+                                <span class="text-slate-400 font-medium">Popularidade</span>
+                                <span class="text-white font-bold group-hover:text-pink-400 transition-colors">{{
+                                    anime.averageScore }}%</span>
+                            </div>
+                            <div class="flex justify-between items-center group">
+                                <span class="text-slate-400 font-medium">Status</span>
+                                <span class="text-emerald-400 font-bold">Finished</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+</div>

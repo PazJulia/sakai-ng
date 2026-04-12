@@ -56,6 +56,11 @@ export class AppTopbar implements OnInit {
                 label: 'Início',
                 icon: 'pi pi-home',
                 routerLink: '/'
+            },
+            {
+                label: 'Favoritos',
+                icon: 'pi pi-heart',
+                routerLink: '/favoritos'
             }
         ];
     }

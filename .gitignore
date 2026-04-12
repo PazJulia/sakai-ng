@@ -44,5 +44,16 @@ testem.log
 Thumbs.db
 qodana.yaml
 llm-context.md
+
+# LLM / AI Context files
+.gemini/
+brain/
+knowledge/
+implementation_plan.md
+task.md
+walkthrough.md
+LLM_CONTEXT.md
+llm-context.md
+
 package-lock.json
 package-lock.json
